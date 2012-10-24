@@ -1,0 +1,32 @@
+{#
+    Sonata provides a built in sonata_type_trans_choice form type that allows you to
+    add a form choice widget whose choices are automatically translated for display.
+
+    But the choice type has three values for each choice: the choice key (which
+    becomes the HTML value attribute and is stored in the database), the raw value
+    (which is the key Sonata translates), and the display value (which is the result
+    of that translation and is shown to the user). The problem is that if your key
+    and raw value don't match, there's no way to get the display value back in other
+    parts of the app (e.g. to show in the list view).
+
+    And it's not unreasonable to want those two values to be different. E.g. for the
+    display value Male, you might want your choice key to be "male" but your raw value
+    (i.e. translation key) to be choices.gender.male (or similar) to keep your language
+    file neater.
+
+    So this template maps the choice key to a different translation key, per the pattern
+    shown in the template's translationKey variable. Obviously, this mapping may not be
+    ideal in all cases, but there needs to be some convention for it to work, and this is
+    the best I can think of.
+#}
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+    {% set translationKey = ('entity.'~(admin.getClassnameLabel()|lower)~'.choices.'~value) %}
+
+    {% if field_description.options.catalogue is not defined %}
+        {{translationKey|trans({'%class%': admin.getClassnameLabel()}, admin.translationdomain)}}
+    {% else %}
+        {{translationKey|trans({'%class%': admin.getClassnameLabel(), field_description.options.catalogue)}}
+    {% endif %}
+{% endblock %}

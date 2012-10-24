@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="" >
+        <body>
+            <trans-unit id="label_type_yes">
+              <source>label_type_yes</source>
+              <target>Is</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+              <source>label_type_no</source>
+              <target>Is Not</target>
+            </trans-unit>
+            <trans-unit id="title_dashboard">
+                <source>title_dashboard</source>
+                <target><![CDATA[Dashboard &mdash; Add/Edit Content]]></target>
+            </trans-unit>
+            <trans-unit id="loading_information">
+                <source>loading_information</source>
+                <target>Loading Information...</target>
+            </trans-unit>
+            <trans-unit id="action_reorder">
+                <source>action_reorder</source>
+                <target>Reorder</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

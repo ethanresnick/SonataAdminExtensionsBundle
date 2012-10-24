@@ -1,0 +1,14 @@
+{#
+    See the long explanation in list_trans_choice.html.twig
+#}
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    {% set translationKey = ('entity.'~(admin.getClassnameLabel()|lower)~'.choices.'~value) %}
+
+    {% if field_description.options.catalogue is not defined %}
+        {{translationKey|trans({'%class%': admin.getClassnameLabel()}, admin.translationdomain)}}
+    {% else %}
+        {{translationKey|trans({'%class%': admin.getClassnameLabel(), field_description.options.catalogue)}}
+    {% endif %}
+{% endblock %}

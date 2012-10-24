@@ -1,0 +1,56 @@
+{# See the UseExtendedTemplates compiler pass for details on how this is loaded #}
+
+{% extends "SonataAdminBundle::standard_layout.html.twig" %}
+
+{# Changes to minify css/js and support plural entity name translations in the dropdown menu. #}
+
+{% block stylesheets %}
+    {% stylesheets
+        '@SonataAdminBundle/Resources/public/bootstrap/bootstrap.min.css'
+        '@SonataAdminBundle/Resources/public/css/layout.css'
+        '@SonataAdminBundle/Resources/public/css/colors.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    {# This is still included manually because I can't figure out how to get assetic to rewrite the image paths correctly #}
+    <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.16.custom.css') }}" type="text/css" media="all" />
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts
+                '@SonatajQueryBundle/Resources/public/jquery-1.8.0.js'
+                '@SonatajQueryBundle/Resources/public/jquery-ui-1.8.23.js'
+                '@SonatajQueryBundle/Resources/public/jquery-ui-i18n.js'
+                '@SonataAdminBundle/Resources/public/bootstrap/js/bootstrap-tabs.js'
+                '@SonataAdminBundle/Resources/public/bootstrap/js/bootstrap-alerts.js'
+                '@SonataAdminBundle/Resources/public/bootstrap/js/bootstrap-modal.js'
+                '@SonataAdminBundle/Resources/public/bootstrap/js/bootstrap-twipsy.js'
+                '@SonataAdminBundle/Resources/public/bootstrap/js/bootstrap-popover.js'
+                '@SonataAdminBundle/Resources/public/bootstrap/js/bootstrap-scrollspy.js'
+                '@SonataAdminBundle/Resources/public/bootstrap/js/bootstrap-dropdown.js'
+                '@SonataAdminBundle/Resources/public/qtip/jquery.qtip-1.0.0-rc3.min.js'
+                '@SonataAdminBundle/Resources/public/jquery/jquery.form.js'
+                '@SonataAdminBundle/Resources/public/base.js'
+            %}
+            <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block sonata_top_bar_nav %}
+    {# There is no hasRole in a TokenInterface ... #}
+    {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+        {% for group in admin_pool.dashboardgroups %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle">{{ group.label|trans({}, group.label_catalogue) }}</a>
+                <ul class="dropdown-menu">
+                    {% for admin in group.items %}
+                        {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
+                            <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|transchoice(2, {}, admin.translationdomain) }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
